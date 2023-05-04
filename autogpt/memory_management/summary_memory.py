@@ -75,7 +75,12 @@ def update_running_summary(
             event["role"] = "you"
 
             # Remove "thoughts" dictionary from "content"
-            content_dict = json.loads(event["content"])
+            try:
+                content_dict = json.loads(event["content"])
+            except JSONDecodeError:
+                print("Error: Invalid JSON string encountered. Skipping this input.")
+                # Set content_dict to an empty dictionary or any default value you'd like to use.
+                content_dict = {}
             if "thoughts" in content_dict:
                 del content_dict["thoughts"]
             event["content"] = json.dumps(content_dict)
